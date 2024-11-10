@@ -1,0 +1,40 @@
+Table users {
+    id integer [pk, increment]
+    username varchar(32) [unique, not null]
+    password_hash varchar(64) [not null]
+    isLibrarian boolean [default: false]
+}
+
+Table books {
+    id integer [pk, increment]
+    name varchar(100) [not null]
+    description text
+    image_url varchar(100) [not null]
+    contents text
+    created_at datetime [default: `now()`]
+    section_id integer [not null]
+}
+
+Table sections {
+    id integer [pk, increment]
+    name varchar(100) [not null]
+    description text
+    created_at datetime [default: `now()`]
+}
+
+Table acl {
+    id integer [pk, increment]
+    user_id integer [not null]
+    book_id integer [not null]
+    access_level varchar(10) [not null]
+    borrowed_on datetime [default: `now()`]
+    due_on datetime
+    returned_on datetime
+}
+
+Ref: acl.user_id > users.id
+Ref: acl.book_id > books.id
+Ref: books.section_id > sections.id
+
+
+
